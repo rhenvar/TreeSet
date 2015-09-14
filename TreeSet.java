@@ -18,7 +18,7 @@ public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
 	
 	public void add(T t) {
 		if (root == null) {
-			this.root = new TreeNode<T>(t);
+			this.root = new TreeNode<>(t);
 			this.size++;
 		}
 		else {
@@ -160,12 +160,11 @@ public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
 
 	@Override
 	public Iterator<T> iterator() {
-		// TODO Auto-generated method stub
 		return new TreeSetIterator<T>(root);
 	}
 	
 	private class TreeSetIterator<T extends Comparable<T>> implements Iterator<T> {
-		private Stack<TreeNode<T>> storedNodes = new Stack<TreeNode<T>>();
+		private Stack<TreeNode<T>> storedNodes = new Stack<>();
 		
 		private TreeSetIterator(TreeNode<T> root) {
 			TreeNode<T> temp = root;
@@ -182,21 +181,23 @@ public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
 
 		@Override
 		public T next() {
-			TreeNode<T> left = storedNodes.peek();
-			if (left.isLeaf()) {
-				storedNodes.pop();
-				return left.field;
+			TreeNode<T> node = storedNodes.pop();
+			if (node.right != null) {
+				TreeNode<T> currentRight = node.right;
+				TreeNode<T> currentLeft = currentRight.left;
+				storedNodes.add(currentRight);
+				while (currentLeft != null) {
+					storedNodes.add(currentLeft);
+					currentLeft = currentLeft.left;
+				}	
 			}
-			else {
-				
-			}
+			return node.field;
 		}
 
 		@Override
 		public void remove() {
 			// TODO Auto-generated method stub
 			
-		}
-		
+		}	
 	}
 }
