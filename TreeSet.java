@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
@@ -7,7 +8,7 @@ import java.util.Stack;
  * TreeSet data structure for O(logn) complexity
  */
 
-public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
+public class TreeSet<T extends Comparable <T>> implements Iterable<T>, Comparable<TreeSet<T>> {
    private TreeNode<T> root;
    private int size;
 
@@ -76,6 +77,10 @@ public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
       return contains(root, t);
    }
 
+   public int size() {
+	   return this.size;
+   }
+   
    public T minimum() {
       return minimumNode().field;
    }
@@ -146,23 +151,19 @@ public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
 
    @Override
    public String toString() {
-      return toString(root);
-   }
-
-   private String toString(TreeNode<T> current) {
-      if (current != null) {
-         return toString(current.left) + " " + current.field.toString() + " " + toString(current.right);
-      }
-      else {
-         return "";
-      }
+      return this.toArrayList().toString();
    }
 
    @Override
    public Iterator<T> iterator() {
       return new TreeSetIterator<T>(root);
    }
-
+   
+   @Override
+   public int compareTo(TreeSet<T> other) {
+	   return this.size() - other.size();
+   }
+   
    private class TreeSetIterator<T extends Comparable<T>> implements Iterator<T> {
       private Stack<TreeNode<T>> storedNodes = new Stack<>();
 
@@ -181,7 +182,7 @@ public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
 
       @Override
       public T next() {
-         TreeNode<T> node = storedNodes.pop();
+    	  TreeNode<T> node = storedNodes.pop();
          if (node.right != null) {
             TreeNode<T> currentRight = node.right;
             TreeNode<T> currentLeft = currentRight.left;
@@ -196,8 +197,7 @@ public class TreeSet<T extends Comparable <T>> implements Iterable<T> {
 
       @Override
       public void remove() {
-         // TODO Auto-generated method stub
-
+    	  throw new ConcurrentModificationException();
       }	
    }
 }
