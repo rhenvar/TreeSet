@@ -32,5 +32,16 @@ public class Main {
 
       System.out.println("Time to check if " + testContains + " is in the set " + endTimeContains / 1000000 + "ms " + isPresent);
       System.out.println(treeTest);
+      
+      Iterator<Integer> t = treeTest.iterator();
+      
+      // remove all evens
+      while (t.hasNext()) {
+    	  if (t.next() % 2 == 0) {
+    		  t.remove();
+    	  }
+      }
+      
+      System.out.println(treeTest);
    }
 }
