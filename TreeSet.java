@@ -196,7 +196,7 @@ public class TreeSet<T extends Comparable<T>> implements Iterable<T>, Comparable
 	@Override
 	public T next() {
 	    if (!this.hasNext()) {
-		throw new IllegalStateException("You have attempted to get the next value on an empty set!);
+		throw new IllegalStateException("You have attempted to get the next value on an empty set!");
 	    }
 	    TreeNode<T> node = storedNodes.pop();
 	    if (node.right != null) {
