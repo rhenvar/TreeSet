@@ -16,6 +16,13 @@ public class TreeSet<T extends Comparable<T>> implements Iterable<T>, Comparable
 	this.size = 0;
     }
 
+    public TreeSet(List<T> list) {
+	this();
+	for (T t : list) {
+	    this.add(t);
+	}
+    }
+
     public void add(T t) {
 	if (root == null) {
 	    this.root = new TreeNode<>(t);
@@ -152,6 +159,20 @@ public class TreeSet<T extends Comparable<T>> implements Iterable<T>, Comparable
     @Override
     public int compareTo(TreeSet<T> other) {
 	return this.size() - other.size();
+    }
+
+    private class TreeNode<T extends Comparable<T>> {
+	public TreeNode<T> left;
+	public TreeNode<T> right;
+	public T field;
+
+	public TreeNode(T t) {
+	    this.field = t;
+	}
+
+	public boolean isLeaf() {
+	    return left == null && right == null;
+	}
     }
 
     private class TreeSetIterator implements Iterator<T> {
